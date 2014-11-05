@@ -1,0 +1,27 @@
+# no annoying audible bell, please
+vbell on
+
+# detach on hangup
+autodetach on
+
+# don't display the copyright page
+startup_message off
+
+# emulate .logout message
+pow_detach_msg "Screen session of $LOGNAME $:cr:$:nl:ended."
+
+defscrollback 5000
+
+#
+# default windows
+#
+
+# screen -t local 0
+# screen -t mail 1 mutt
+# screen -t 40 2 rlogin server
+screen -t local 0
+screen -t sh 1
+
+hardstatus on
+hardstatus alwayslastline "%Lw"
+hardstatus string "%{= kW}[%H - load avr: %l] %w %= @%c:%s - %d %M %Y (%D)"

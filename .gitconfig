@@ -1,0 +1,7 @@
+[user]
+	name = Luciano Coutinho
+	email = lucianocoutinho@live.com
+[push]
+	default = simple
+[color]
+	diff = auto
