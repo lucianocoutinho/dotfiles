@@ -129,7 +129,15 @@ function set_bash_prompt () {
   fi
   
   # Set the bash prompt variable.
-  PS1="\u@\h \w ${BRANCH}${PROMPT_SYMBOL} "
+  # PS1="\u@\h \w ${BRANCH}${PROMPT_SYMBOL} "
+
+  # Set bash prompt based in user id
+  if [ $(id -u) = 0 ]; then
+    PS1="\n(${RED}\u${COLOR_NONE} - \w @${GREEN}\t${COLOR_NONE}) ${BRANCH} \n\H: "
+  else
+    PS1="\n(${BLUE}\u${COLOR_NONE} - \w @${GREEN}\t${COLOR_NONE}) ${BRANCH} \n\H: "
+  fi
+
 }
 
 # Tell bash to execute this function just before displaying its prompt.

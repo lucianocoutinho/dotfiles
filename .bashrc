@@ -21,3 +21,6 @@ alias fgrep='fgrep --color=auto '
 
 # set history control to avoid duplicated entries
 export HISTCONTROL=erasedups
+
+# load .git_svn_bash_prompt script if exists
+[ -f ~/.git_svn_bash_prompt.sh ] && source ~/.git_svn_bash_prompt.sh
