@@ -96,7 +96,14 @@ function md5sum() {
 
 #PS1=$'\n(\e[1;34m%n \e[m - %d \e[1;32m @%*\e[m) \n%M: '
 #PS1=$'\n\e[1;34m%n@%m\e[m:%d \e[1;32m@%*\e[m \n%% '
-PS1=$'\n\e[1;34m@%m\e[m:%d \e[1;32m@%*\e[m \n%% '
+#PS1=$'\n\e[1;34m@%m\e[m:%d \e[1;32m@%*\e[m \n%% '
+
+# change the prompt if using docker
+if [ -z $DOCKER_HOST ] ; then
+	PS1=$'\n\e[1;34m@%m\e[m:%d \e[1;32m@%*\e[m \n%% '
+else
+	PS1=$'\n\e[1;34m@%m\e[m:%d \e[1;32m@%*\e[m \e[1;31m[docker]\e[m \n%% '
+fi
 
 export CVS_RSH=ssh
 export EDITOR="vim"
