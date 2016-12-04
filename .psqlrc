@@ -1,0 +1,13 @@
+\set QUIET 1
+\timing
+\set HISTSIZE 2000
+
+\set PROMPT1 '%n@%/%x%R%# '
+\set PROMPT2 '>'
+
+\x auto
+
+\set QUIET 0
+
+\set AUTOCOMMIT off
+
