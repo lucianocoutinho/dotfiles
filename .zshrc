@@ -22,7 +22,7 @@ setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_IGNORE_SPACE
 setopt SHARE_HISTORY
 
-export HISTFILE=$HOME/~.zsh_history
+export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=500000
 export SAVEHIST=300000
 
