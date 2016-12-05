@@ -11,4 +11,3 @@ Host *
 	ControlMaster auto
 	ControlPath ~/.ssh/master-%r@%h:%p
 	VisualHostKey yes
-	UseRoaming no
