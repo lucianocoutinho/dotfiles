@@ -15,11 +15,16 @@ setopt EXTENDED_GLOB
 setopt AUTOCD
 setopt INTERACTIVE_COMMENTS
 setopt APPEND_HISTORY
+setopt INC_APPEND_HISTORY
 setopt HIST_FIND_NO_DUPS
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_IGNORE_SPACE
 setopt SHARE_HISTORY
+
+export HISTFILE=$HOME/~.zsh_history
+export HISTSIZE=500000
+export SAVEHIST=300000
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion::complete:*' use-cache 1
