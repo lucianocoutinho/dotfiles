@@ -25,7 +25,7 @@ zsh:
 	install -b -m 0644 .zshrc ${HOME}/.zshrc
 	rm ${HOME}/.zcompdump* 2> /dev/null || exit 0
 	zsh -c 'zcompile ${HOME}/.zshrc' 2> /dev/null || exit 0
-	zsh -c 'zcompile ${HOME}/.zshrc.local' 2> /dev/null || exit 0
+	if [ -f ${HOME}/.zshrc.local ] ; then zsh -c 'zcompile ${HOME}/.zshrc.local' 2> /dev/null || exit 0 ; fi
 
 psql:
 	install -b -m 0644 .psqlrc ${HOME}/.psqlrc
