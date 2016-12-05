@@ -1,0 +1,14 @@
+Host github.com
+	User git
+	Port 22
+
+Host *
+	User luciano
+	Port 222
+	ForwardAgent yes
+	HashKnownHosts yes
+	ForwardAgent yes
+	ControlMaster auto
+	ControlPath ~/.ssh/master-%r@%h:%p
+	VisualHostKey yes
+	UseRoaming no
