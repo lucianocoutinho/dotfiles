@@ -96,7 +96,7 @@ if [[ -d $HOME/.rbenv ]] ; then
 fi
 
 # just for fun... :-)
-type fortune 2>&1 > /dev/null
+type fortune > /dev/null 2>&1
 [ $? -eq 0 ] && (echo && fortune -s computers)
 
 # run local settings if exists
