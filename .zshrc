@@ -7,9 +7,16 @@ else
   PS1=$'\n(\e[1;34m%n\e[m - %d \e[1;32m @%*\e[m) \n%M%% '
 fi
 
+export HISTFILE=$HOME/.zsh_history
+export HISTSIZE=500000
+export SAVEHIST=300000
+
+setopt AUTO_PUSHD
+setopt AUTO_LIST
 setopt NO_PROMPT_CR
 setopt NO_BEEP
 setopt AUTO_MENU
+setopt COMPLETE_ALIASES
 setopt COMPLETE_IN_WORD
 setopt EXTENDED_GLOB
 setopt AUTOCD
