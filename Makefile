@@ -1,13 +1,12 @@
 all:
 	@echo possible targets bash ssh screen tmux vim zsh psql irb install and install-all
 
-install: bash ssh screen tmux vim zsh
-install-all: bash ssh screen tmux vim zsh psql irb
+install: bash ssh screen tmux vim zsh psql ruby
 
 ssh:
-	install -d -m 0755 ${HOME}/.ssh
-	install -b -m 0644 ssh_config ${HOME}/.ssh/config
-	install -b -m 0644 ssh_authorized_keys ${HOME}/.ssh/authorized_keys
+	install -d -m 0700 ${HOME}/.ssh
+	install -b -m 0600 ssh_config ${HOME}/.ssh/config
+	install -b -m 0600 ssh_authorized_keys ${HOME}/.ssh/authorized_keys
 
 tmux:
 	install -b -m 0644 .tmux.conf ${HOME}/.tmux.conf
@@ -30,6 +29,7 @@ zsh:
 psql:
 	install -b -m 0644 .psqlrc ${HOME}/.psqlrc
 
-irb:
+ruby:
 	install -b -m 0644 .irbrc ${HOME}/.irbrc
+	install -b -m 0644 .rspec ${HOME}/.rspec
 
