@@ -7,10 +7,6 @@ else
   PS1=$'\n(\e[1;34m%n\e[m - %d \e[1;32m @%*\e[m) \n%M%% '
 fi
 
-export HISTFILE=$HOME/.zsh_history
-export HISTSIZE=500000
-export SAVEHIST=300000
-
 setopt AUTO_PUSHD
 setopt AUTO_LIST
 setopt NO_PROMPT_CR
@@ -61,6 +57,8 @@ bindkey '^y' yank
 bindkey '^t' delete-word
 bindkey '^x' copy-prev-shell-word
 bindkey '^z' vi-undo-change
+bindkey '^w' forward-word
+bindkey '^b' backward-word
 
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
@@ -70,7 +68,6 @@ alias cvim="vim -c 'set autoindent' -c 'set number'"
 alias cim="vim -c 'set autoindent' -c 'set number'"
 if [ "$(uname -s)" = "Darwin" ] ; then
   alias ls='ls -a -G '
-  alias history='fc -fdl'
 
 elif [ "$(uname -s)" = "Linux" ] ; then
   alias ls='ls -a --color=tty '
@@ -81,11 +78,13 @@ fi
 alias cp='cp -i '
 alias mv='mv -i '
 alias rm='rm -i '
-alias grep='grep --color=always '
-alias egrep='egrep --color=always '
-alias fgrep='fgrep --color=always '
+alias grep='grep --color=auto '
+alias egrep='egrep --color=auto '
+alias fgrep='fgrep --color=auto '
 alias ssh='ssh -YC '
 alias gvim='gvim -p '
+# kept for reference only and to get used to use fc instead of history
+#alias history='fc -li 0'
 
 # fix path
 for dir in /usr/local/bin /usr/local/sbin \
@@ -109,6 +108,39 @@ type fortune > /dev/null 2>&1
 # run local settings if exists
 if [[ -f ~/.zshrc.local ]]; then
   . ~/.zshrc.local
+fi
+
+# macOS only: resize terminal window in case we are using a big screen
+if [ "$(uname -s)" = "Darwin" -a -n "${TERM_PROGRAM}" \
+       -a "${TERM_PROGRAM}" = "Apple_Terminal" ] ; then
+
+  # get screen resolution
+  resolution="$(system_profiler SPDisplaysDataType | grep Resolution \
+                 | awk '{print $2}' | head -1)"
+
+  # resize and position the window based in the resolution
+  if [ "${resolution}" = "1920" ] ; then
+    # resize window to 220x62
+    printf '\e[8;62;220t'
+
+    # put the window in the middle of screen
+    osascript \
+      -e 'tell application "Terminal"' \
+      -e 'set position of front window to {250, 100}' \
+      -e 'end tell'
+
+  else
+    # resize window to 135
+    printf '\e[8;40;135'
+
+    # put the window in the middle of screen
+    osascript \
+      -e 'tell application "Terminal"' \
+      -e 'set position of front window to {200, 50}' \
+      -e 'end tell'
+
+  fi
+
 fi
 
 # EOF
