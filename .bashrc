@@ -11,6 +11,9 @@ fi
 # set history control to avoid duplicated entries
 export HISTCONTROL=erasedups
 
+# set history to show date and time
+export HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S : "
+
 # define aliases
 if [ "$(uname -s)" = "Darwin" ] ; then
   alias ls='ls -a -G '
