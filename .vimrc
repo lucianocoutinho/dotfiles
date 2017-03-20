@@ -15,6 +15,10 @@ set stl=[%02n]\ %(%M%R%H%)\ %F\ %=%o\ <lin:%l\ col:%c\ %V>\ %P
 set list
 set listchars=tab:»·,trail:·
 
+" force save file using sudo when we got permission denied. 
+" https://github.com/Gnitset/.bah/blob/master/configs/vimrc#L49
+command W :execute ':silent w !sudo tee % > /dev/null' | :edit!
+
 " set autoindenting always on (kind annoying)
 set autoindent
 
