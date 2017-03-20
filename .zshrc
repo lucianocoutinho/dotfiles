@@ -65,7 +65,7 @@ export LC_ALL="en_US.UTF-8"
 
 # define aliases
 alias cvim="vim -c 'set autoindent' -c 'set number'"
-alias cim="vim -c 'set autoindent' -c 'set number'"
+alias cim="vim -c 'set noautoindent' -c 'set number'"
 if [ "$(uname -s)" = "Darwin" ] ; then
   alias ls='ls -a -G '
 
@@ -85,6 +85,9 @@ alias ssh='ssh -YC '
 alias gvim='gvim -p '
 # kept for reference only and to get used to use fc instead of history
 #alias history='fc -li 0'
+
+alias ts="date '+%FT%T.%N%z'"
+alias find='noglob find'
 
 # fix path
 for dir in /usr/local/bin /usr/local/sbin \
