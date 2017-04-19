@@ -44,6 +44,10 @@ zstyle ':completion:*' use-compctl false
 zstyle ':completion:*' menu select=1
 zstyle ':completion:*' verbose true
 
+if [ -d /usr/local/share/zsh-completions ] ; then
+  fpath=(/usr/local/share/zsh-completions $fpath)
+fi
+
 autoload -U compinit
 compinit -d ~/.zcompdump.`hostname`
 
@@ -113,37 +117,37 @@ if [[ -f ~/.zshrc.local ]]; then
   . ~/.zshrc.local
 fi
 
-# macOS only: resize terminal window in case we are using a big screen
-if [ "$(uname -s)" = "Darwin" -a -n "${TERM_PROGRAM}" \
-       -a "${TERM_PROGRAM}" = "Apple_Terminal" ] ; then
-
-  # get screen resolution
-  resolution="$(system_profiler SPDisplaysDataType | grep Resolution \
-                 | awk '{print $2}' | head -1)"
-
-  # resize and position the window based in the resolution
-  if [ "${resolution}" = "1920" ] ; then
-    # resize window to 220x62
-    printf '\e[8;62;220t'
-
-    # put the window in the middle of screen
-    osascript \
-      -e 'tell application "Terminal"' \
-      -e 'set position of front window to {250, 100}' \
-      -e 'end tell'
-
-  else
-    # resize window to 135
-    printf '\e[8;40;135'
-
-    # put the window in the middle of screen
-    osascript \
-      -e 'tell application "Terminal"' \
-      -e 'set position of front window to {200, 50}' \
-      -e 'end tell'
-
-  fi
-
-fi
+### # macOS only: resize terminal window in case we are using a big screen
+### if [ "$(uname -s)" = "Darwin" -a -n "${TERM_PROGRAM}" \
+###        -a "${TERM_PROGRAM}" = "Apple_Terminal" ] ; then
+### 
+###   # get screen resolution
+###   resolution="$(system_profiler SPDisplaysDataType | grep Resolution \
+###                  | awk '{print $2}' | head -1)"
+### 
+###   # resize and position the window based in the resolution
+###   if [ "${resolution}" = "1920" ] ; then
+###     # resize window to 220x62
+###     printf '\e[8;62;220t'
+### 
+###     # put the window in the middle of screen
+###     osascript \
+###       -e 'tell application "Terminal"' \
+###       -e 'set position of front window to {250, 100}' \
+###       -e 'end tell'
+### 
+###   else
+###     # resize window to 135
+###     printf '\e[8;40;135'
+### 
+###     # put the window in the middle of screen
+###     osascript \
+###       -e 'tell application "Terminal"' \
+###       -e 'set position of front window to {200, 50}' \
+###       -e 'end tell'
+### 
+###   fi
+### 
+### fi
 
 # EOF
