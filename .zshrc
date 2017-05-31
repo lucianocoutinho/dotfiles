@@ -1,6 +1,11 @@
 ###
 ### local custom settings
 ###
+
+## # Set up the prompt
+## autoload -Uz promptinit
+## promptinit
+
 if [ $(id -u) = 0 ] ; then
   PS1=$'\n(\e[1;31m%n [!]\e[m - %d \e[1;32m @%*\e[m) \n%M%% '
 else
@@ -29,27 +34,44 @@ export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=500000
 export SAVEHIST=300000
 
+# Use modern completion system
+autoload -Uz compinit
+compinit
+
 zstyle ':completion:*:*:*' hosts $ssh_config_hosts $ssh_known_hosts
 zstyle ':completion::complete:*' use-cache 1
 zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
 zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
 zstyle ':completion:*' hosts $hosts
 zstyle ':completion:*' list-colors "$LS_COLORS"
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' ''
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
 zstyle ':completion:*' auto-description 'specify: %d'
 zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
 zstyle ':completion:*' special-dirs true
 zstyle ':completion:*' use-compctl false
-zstyle ':completion:*' menu select=1
+zstyle ':completion:*' menu select=2
+zstyle ':completion:*' menu select=long
 zstyle ':completion:*' verbose true
+
+zstyle ':completion:*' completer _expand _complete _correct _approximate
+zstyle ':completion:*' format 'Completing %d'
+zstyle ':completion:*' group-name ''
+
+# color useless stuff
+which dircolors > /dev/null
+if [ $? -eq 0 ] ; then
+  eval "$(dircolors -b)"
+fi
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-colors ''
+
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
 if [ -d /usr/local/share/zsh-completions ] ; then
   fpath=(/usr/local/share/zsh-completions $fpath)
 fi
-
-autoload -U compinit
-compinit -d ~/.zcompdump.`hostname`
 
 # FIXME: not sure yet if is a good choice...
 # bindkey -v   # vi key bindings
