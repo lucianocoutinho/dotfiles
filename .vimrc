@@ -65,6 +65,19 @@ endif
 set fillchars=vert:\|,fold:\ 
 " }}}
 
+" navigation in tree mode: https://shapeshed.com/vim-netrw/
+let g:netrw_banner = 0
+let g:netrw_altv = 1
+let g:netrw_liststyle = 3
+let g:netrw_winsize = 30
+" how files are open
+" 1 - open files in a new horizontal split
+" 2 - open files in a new vertical split
+" 3 - open files in a new tab
+" 4 - open in previous window
+let g:netrw_browse_split = 4
+
+
 " useful autocomplete settings
 iab _chl <c-r>=strftime("%a %b %d %Y Luciano Coutinho <lucianocoutinho@live.com>")<cr>
 iab _tlower abcdefghijklmnopqrstuvwxyz
