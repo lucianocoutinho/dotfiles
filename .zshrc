@@ -61,7 +61,7 @@ if [ -d /usr/local/share/zsh-completions ] ; then
 fi
 
 # FIXME: not sure yet if is a good choice...
-# bindkey -v   # vi key bindings
+bindkey -v   # vi key bindings
 bindkey ' ' magic-space  # also do history expansion on space
 bindkey '^a' beginning-of-line
 bindkey '^e' end-of-line
@@ -77,8 +77,6 @@ export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
 # define aliases
-alias cvim="vim -c 'set autoindent' -c 'set number'"
-alias cim="vim -c 'set noautoindent' -c 'set number'"
 if [ "$(uname -s)" = "Darwin" ] ; then
   alias ls='ls -a -G '
 
@@ -95,12 +93,22 @@ alias grep='grep --color=auto '
 alias egrep='egrep --color=auto '
 alias fgrep='fgrep --color=auto '
 alias ssh='ssh -YC '
-alias gvim='gvim -p '
+alias gvim='gvim -O '
 # kept for reference only and to get used to use fc instead of history
 #alias history='fc -li 0'
 
 alias ts="date '+%FT%T.%N%z'"
 alias find='noglob find'
+
+alias youtube-dl-best="youtube-dl -c -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'"
+
+# manage network sharing
+alias enable_network_share="echo 'nat on en0 from en5:network to any -> (en0)' > /tmp/pf.conf.tmp && \
+	sudo sysctl -w net.inet.ip.forwarding=1 && \
+	sudo pfctl -d -q 2>/dev/null ; sudo pfctl -q -e -f /tmp/pf.conf.tmp 2> /dev/null && \
+	rm -f /tmp/pf.conf.tmp"
+
+alias disable_network_share="sudo pfctl -d -q 2>/dev/null && sudo sysctl -w net.inet.ip.forwarding=0"
 
 # fix path
 for dir in /usr/local/bin /usr/local/sbin \
