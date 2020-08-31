@@ -22,7 +22,7 @@ set statusline+=\ %{&fileencoding?&fileencoding:&encoding}\] " file encoding
 set statusline+=\ <lin:%l\ col:%c\ %V>                       " line and column number
 set statusline+=\ %P                                         " Percentage through file displayed
 
-" visual spaces and tabs
+" visual spaces and tabs (show ALL spaces by default)
 set listchars=tab:»·,trail:·,precedes:·,space:·
 set list
 
@@ -39,12 +39,8 @@ command SQ :execute 'set listchars=tab:»·,trail:·,precedes:·'
 "set a visual mark to know where the column should end
 set colorcolumn=80
 
-" force save file using sudo when we got permission denied. 
-" https://github.com/Gnitset/.bah/blob/master/configs/vimrc#L49
-command W :execute ':silent w !sudo tee % > /dev/null' | :edit!
-
 " set autoindenting always on (kind annoying)
-" set autoindent
+"set autoindent
 set smartindent
 
 syntax on
@@ -52,6 +48,11 @@ set number
 set hlsearch
 set incsearch
 set wildmenu
+"
+" search down into subfolders and provides tab-completion for all file related
+" tasks
+set path+=**
+
 set vb
 
 filetype plugin indent on
@@ -62,7 +63,8 @@ filetype plugin indent on
 " force 2 or 4 spaces instead of tabs for some file types
 if has("autocmd")
 
-  autocmd BufRead *.txt set tw=78
+  autocmd BufRead,BufNewFile *.txt set textwidth=80
+  autocmd BufRead,BufNewFile *.md  set textwidth=80
 
   autocmd Filetype css setlocal tabstop=2 shiftwidth=2 expandtab
   autocmd Filetype sh setlocal tabstop=2 shiftwidth=2 expandtab
@@ -79,6 +81,12 @@ if has("autocmd")
   autocmd BufLeave  *.c,*.h unabbr FOR
 endif
 
+
+" force save file using sudo when we got permission denied. 
+" https://github.com/Gnitset/.bah/blob/master/configs/vimrc#L49
+command W :execute ':silent w !sudo tee % > /dev/null' | :edit!
+
+
 " {{{ folding
 " set foldclose=all
 " set foldcolumn=1
@@ -86,7 +94,7 @@ endif
 " set foldmarker{{{,}}}
 " set foldmethod=marker
 " set foldtext=foldtext()
-set fillchars=vert:\|,fold:\ 
+" set fillchars=vert:\|,fold:\ 
 " }}}
 
 " navigation in tree mode: https://shapeshed.com/vim-netrw/
