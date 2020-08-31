@@ -12,6 +12,13 @@ else
   PS1=$'\n(\e[1;34m%n\e[m - %d \e[1;32m @%*\e[m) \n%M%% '
 fi
 
+## Set prompt to show git and kubernetes information.
+## # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/kube-ps1
+## KUBE_PS1_PREFIX=''
+## KUBE_PS1_SUFFIX=''
+## KUBE_PS1_SYMBOL_ENABLE=false
+## PS1=$'\n%{$fg[white]%}[%n@%m]%{$reset_color%} %{$fg[blue]%}%~%{$reset_color%} %{$fg[white]%}@%*%{$reset_color%} $(kube_ps1)\n$(git_prompt_info)$(bzr_prompt_info)[%?]%{$fg_bold[black]%}%#%{$reset_color%} '
+
 setopt AUTO_PUSHD
 setopt AUTO_LIST
 setopt NO_PROMPT_CR
