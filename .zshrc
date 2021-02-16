@@ -1,177 +1,112 @@
-###
-### local custom settings
-###
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-## # Set up the prompt
-## autoload -Uz promptinit
-## promptinit
+# Path to your oh-my-zsh installation.
+export ZSH="/Users/luco02/.oh-my-zsh"
 
-if [ $(id -u) = 0 ] ; then
-  PS1=$'\n(\e[1;31m%n [!]\e[m - %d \e[1;32m @%*\e[m) \n%M%% '
-else
-  PS1=$'\n(\e[1;34m%n\e[m - %d \e[1;32m @%*\e[m) \n%M%% '
-fi
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# ZSH_THEME="robbyrussell"
+ZSH_THEME="frisk"
 
-## Set prompt to show git and kubernetes information.
-## # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/kube-ps1
-## KUBE_PS1_PREFIX=''
-## KUBE_PS1_SUFFIX=''
-## KUBE_PS1_SYMBOL_ENABLE=false
-## PS1=$'\n%{$fg[white]%}[%n@%m]%{$reset_color%} %{$fg[blue]%}%~%{$reset_color%} %{$fg[white]%}@%*%{$reset_color%} $(kube_ps1)\n$(git_prompt_info)$(bzr_prompt_info)[%?]%{$fg_bold[black]%}%#%{$reset_color%} '
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
-setopt AUTO_PUSHD
-setopt AUTO_LIST
-setopt NO_PROMPT_CR
-setopt NO_BEEP
-setopt AUTO_MENU
-setopt COMPLETE_ALIASES
-setopt COMPLETE_IN_WORD
-setopt EXTENDED_GLOB
-setopt AUTOCD
-setopt INTERACTIVE_COMMENTS
-setopt APPEND_HISTORY
-setopt INC_APPEND_HISTORY
-setopt HIST_FIND_NO_DUPS
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_IGNORE_SPACE
-setopt SHARE_HISTORY
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
 
-export HISTFILE=$HOME/.zsh_history
-export HISTSIZE=500000
-export SAVEHIST=300000
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
 
-# Use modern completion system
-autoload -Uz compinit
-compinit
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
 
-zstyle ':completion:*:*:*' hosts $ssh_config_hosts $ssh_known_hosts
-zstyle ':completion::complete:*' use-cache 1
-zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
-zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
-zstyle ':completion:*' hosts $hosts
-zstyle ':completion:*' list-colors "$LS_COLORS"
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' ''
-zstyle ':completion:*' auto-description 'specify: %d'
-zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-zstyle ':completion:*' special-dirs true
-zstyle ':completion:*' use-compctl false
-zstyle ':completion:*' menu select=1
-zstyle ':completion:*' verbose true
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
 
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
-zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
 
-if [ -d /usr/local/share/zsh-completions ] ; then
-  fpath=(/usr/local/share/zsh-completions $fpath)
-fi
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS=true
 
-# FIXME: not sure yet if is a good choice...
-bindkey -v   # vi key bindings
-bindkey ' ' magic-space  # also do history expansion on space
-bindkey '^a' beginning-of-line
-bindkey '^e' end-of-line
-bindkey '^r' history-incremental-search-backward
-bindkey '^y' yank
-bindkey '^t' delete-word
-bindkey '^x' copy-prev-shell-word
-bindkey '^z' vi-undo-change
-bindkey '^w' forward-word
-bindkey '^b' backward-word
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
 
-export LANG="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
 
-# define aliases
-if [ "$(uname -s)" = "Darwin" ] ; then
-  alias ls='ls -a -G '
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
 
-elif [ "$(uname -s)" = "Linux" ] ; then
-  alias ls='ls -a --color=tty '
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
 
-else
-  alias ls='ls -a '
-fi
-alias cp='cp -i '
-alias mv='mv -i '
-alias rm='rm -i '
-alias grep='grep --color=auto '
-alias egrep='egrep --color=auto '
-alias fgrep='fgrep --color=auto '
-alias ssh='ssh -YC '
-alias gvim='gvim -O '
-# kept for reference only and to get used to use fc instead of history
-#alias history='fc -li 0'
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-alias ts="date '+%FT%T.%N%z'"
-alias find='noglob find'
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
+HIST_STAMPS="dd.mm.yyyy"
 
-alias youtube-dl-best="youtube-dl -c -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'"
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
 
-# manage network sharing
-alias enable_network_share="echo 'nat on en0 from en5:network to any -> (en0)' > /tmp/pf.conf.tmp && \
-	sudo sysctl -w net.inet.ip.forwarding=1 && \
-	sudo pfctl -d -q 2>/dev/null ; sudo pfctl -q -e -f /tmp/pf.conf.tmp 2> /dev/null && \
-	rm -f /tmp/pf.conf.tmp"
+# Which plugins would you like to load?
+# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+  brew colorize docker encode64 git git-extras jsontools osx vi-mode 
+  kube-ps1 zsh-syntax-highlighting # zsh-autosuggestions
+)
 
-alias disable_network_share="sudo pfctl -d -q 2>/dev/null && sudo sysctl -w net.inet.ip.forwarding=0"
+source $ZSH/oh-my-zsh.sh
 
-# fix path
-for dir in /usr/local/bin /usr/local/sbin \
-  /opt/local/bin /opt/local/sbin $HOME/System/bin \
-  $HOME/bin $HOME/sbin ; do
-    if [ -d ${dir} ] ; then
-      export PATH="$PATH:${dir}"
-    fi
-done
+# User configuration
 
-# rbenv settings
-if [[ -d $HOME/.rbenv ]] ; then
-  export PATH="$HOME/.rbenv/bin:$PATH"
-  eval "$(rbenv init -)"
-fi
+# export MANPATH="/usr/local/man:$MANPATH"
 
-# just for fun... :-)
-type fortune > /dev/null 2>&1
-[ $? -eq 0 ] && (echo && fortune -s computers)
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
 
-# run local settings if exists
-if [[ -f ~/.zshrc.local ]]; then
-  . ~/.zshrc.local
-fi
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
 
-### # macOS only: resize terminal window in case we are using a big screen
-### if [ "$(uname -s)" = "Darwin" -a -n "${TERM_PROGRAM}" \
-###        -a "${TERM_PROGRAM}" = "Apple_Terminal" ] ; then
-### 
-###   # get screen resolution
-###   resolution="$(system_profiler SPDisplaysDataType | grep Resolution \
-###                  | awk '{print $2}' | head -1)"
-### 
-###   # resize and position the window based in the resolution
-###   if [ "${resolution}" = "1920" ] ; then
-###     # resize window to 220x62
-###     printf '\e[8;62;220t'
-### 
-###     # put the window in the middle of screen
-###     osascript \
-###       -e 'tell application "Terminal"' \
-###       -e 'set position of front window to {250, 100}' \
-###       -e 'end tell'
-### 
-###   else
-###     # resize window to 135
-###     printf '\e[8;40;135'
-### 
-###     # put the window in the middle of screen
-###     osascript \
-###       -e 'tell application "Terminal"' \
-###       -e 'set position of front window to {200, 50}' \
-###       -e 'end tell'
-### 
-###   fi
-### 
-### fi
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
 
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 # EOF
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/local/bin/consul consul
+
+complete -o nospace -C /usr/local/bin/terraform terraform

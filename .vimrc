@@ -17,8 +17,8 @@ set statusline+=\ %.50F                                      " path to the file
 set statusline+=\ %=                                         " move contents to right
 set statusline+=\ %o                                         " show byte number
 set statusline+=\ %y                                         " filetype
-set statusline+=\ [%{&fileformat}\ /                         " file format
-set statusline+=\ %{&fileencoding?&fileencoding:&encoding}\] " file encoding
+set statusline+=\ [%{&fileformat}\/                         " file format
+set statusline+=\%{&fileencoding?&fileencoding:&encoding}\] " file encoding
 set statusline+=\ <lin:%l\ col:%c\ %V>                       " line and column number
 set statusline+=\ %P                                         " Percentage through file displayed
 
@@ -127,7 +127,7 @@ iab _dhora <c-r>=strftime("%H:%M")<cr>
 iab _me Luciano Coutinho <lucianocoutinho@live.com>
 
 " set GUI font
-set guifont=Monaco:h13
+set guifont=Monaco:h12
 
 " experimenting some plugins from:
 " curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
@@ -143,10 +143,54 @@ Plug 'mbbill/undotree'
 Plug 'lyuts/vim-rtags'
 Plug 'git@github.com:kien/ctrlp.vim.git'
 
+" plugin to focus in the selected paragraph/block
+" https://github.com/junegunn/limelight.vim
+Plug 'junegunn/limelight.vim'
+
 " needs to run the ./install.py from `~/.vim/plugged/YouCompleteMe`
 " broken: Plug 'git@github.com:Valloric/YouCompleteMe.git'
 
+"use pre build, add 'vim-plug' to the filetype list so vim-plug can update this plugin
+" see: https://github.com/iamcco/markdown-preview.nvim/issues/50
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+
 call plug#end()
+
+" BEGIN:  markdown preview-plugin.nvim settings
+" reference: https://github.com/iamcco/markdown-preview.nvim
+" set to 1, nvim will open the preview window after entering the markdown buffer
+" default: 0
+let g:mkdp_auto_start = 0
+
+" set to 1, the nvim will auto close current preview window when change
+" from markdown buffer to another buffer
+" default: 1
+let g:mkdp_auto_close = 0
+
+" set to 1, the vim will refresh markdown when save the buffer or
+" leave from insert mode, default 0 is auto refresh markdown as you edit or
+" move the cursor
+" default: 0
+let g:mkdp_refresh_slow = 0
+
+" recognized filetypes
+" these filetypes will have MarkdownPreview... commands
+let g:mkdp_filetypes = ['markdown']
+
+" use a custom markdown style must be absolute path
+" like '/Users/username/markdown.css' or expand('~/markdown.css')
+" CSS from: https://github.com/sindresorhus/github-markdown-css
+let g:mkdp_markdown_css='~/.vim/github-markdown.css'
+
+" END:  markdown preview-plugin.nvim settings
+
+" FIXME: manually start/stop "MarkdownPreview"
+command MD :execute 'MarkdownPreview'
+command MX :execute 'MarkdownPreviewStop'
+
+" FIXME: manually start/stop "limelight"
+command LL :execute 'Limelight'
+command LX :execute 'Limelight!'
 
 " prevent ctrlp plugin from use caching
 let g:ctrlp_use_caching = 0

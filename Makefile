@@ -18,13 +18,16 @@ bash:
 	install -b -m 0644 .bashrc ${HOME}/.bashrc
 
 vim:
+	install -d -m 0700 ${HOME}/.vim
 	install -b -m 0644 .vimrc ${HOME}/.vimrc
+	install -b -m 0644 .vim/github-markdown.css ${HOME}/.vim/github-markdown.css
 
 zsh:
 	install -b -m 0644 .zshrc ${HOME}/.zshrc
-	rm ${HOME}/.zcompdump* 2> /dev/null || exit 0
-	zsh -c 'zcompile ${HOME}/.zshrc' 2> /dev/null || exit 0
-	if [ -f ${HOME}/.zshrc.local ] ; then zsh -c 'zcompile ${HOME}/.zshrc.local' 2> /dev/null || exit 0 ; fi
+	install -b -m 0644 .zshrc.local ${HOME}/.zshrc.local.new
+	rm ${HOME}/.zcompdump* 2> /dev/null || exit 1
+	zsh -c 'zcompile ${HOME}/.zshrc' 2> /dev/null || exit 1
+	if [ -f ${HOME}/.zshrc.local ] ; then zsh -c 'zcompile ${HOME}/.zshrc.local' 2> /dev/null || exit 1 ; fi
 
 psql:
 	install -b -m 0644 .psqlrc ${HOME}/.psqlrc
