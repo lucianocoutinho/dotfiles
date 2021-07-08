@@ -1,5 +1,7 @@
-export LANG="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
+# fix brew environment variables for Apple M1
+if [[ -x /opt/homebrew/bin/brew ]] ; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 
 if [[ $(which fortune >/dev/null) -eq 0 ]] ; then
   echo
@@ -7,17 +9,26 @@ if [[ $(which fortune >/dev/null) -eq 0 ]] ; then
   echo
 fi
 
-# autocomplete functions for kubectl, helm and aws...
-# source <(kubectl completion zsh)
-# source <(helm completion zsh)
-# source /usr/local/share/zsh/site-functions/aws_zsh_completer.sh
+# autocomplete functions...
+[[ $(which gh >/dev/null) ]] && source <(gh completion -s zsh)
+[[ $(which helm >/dev/null) ]] && source <(helm completion zsh)
+[[ $(which kubectl >/dev/null) ]] && source <(kubectl completion zsh)
 
-# 
+
+# https://github.com/junegunn/fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 fpath=($fpath ~/.zsh/completion)
+
+### # just to make sure autocomplete works...
+### autoload -U +X bashcompinit && bashcompinit
+### autoload -U compinit
+### compinit
 
 # probably a bad idea (vi key bindings)
 bindkey -v
 
+# aliases
 alias ls='ls -Ga'
 alias rm='rm -i'
 alias mv='mv -i'
@@ -27,56 +38,44 @@ alias grep='grep --color=auto '
 alias egrep='egrep --color=auto '
 alias fgrep='fgrep --color=auto '
 
-alias ssh='ssh -YC '
+alias ssh='ssh -Y '
 alias gvim='gvim -O '
 
 # kept for reference only and to get used to use fc instead of history
 #alias history='fc -li 0'
 
-# alias is_json='xargs -0 node -e "try {json = JSON.parse(process.argv[1]);} catch (e) { console.log(false); json = null; } if(json) { console.log(true); }"'
-
 alias ts="date '+%FT%T.%N%z'"
 alias find='noglob find'
 
 # add visual studio code the path
-alias vscode='/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code'
+alias code='/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code'
 
 alias youtube-dl-best="youtube-dl -c -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'"
 
 # manage network sharing
-alias enable_network_share="echo 'nat on en0 from en5:network to any -> (en0)' > /tmp/pf.conf.tmp && \
-	sudo sysctl -w net.inet.ip.forwarding=1 && \
-	sudo pfctl -d -q 2>/dev/null ; sudo pfctl -q -e -f /tmp/pf.conf.tmp 2> /dev/null && \
-	rm -f /tmp/pf.conf.tmp"
+alias enable_network_share="echo 'nat on en0 from en5:network to any -> (en0)' \
+	> /tmp/pf.conf.tmp \
+	&& sudo sysctl -w net.inet.ip.forwarding=1 \
+	&& sudo pfctl -d -q 2>/dev/null \
+	; sudo pfctl -q -e -f /tmp/pf.conf.tmp 2> /dev/null \
+	&& rm -f /tmp/pf.conf.tmp"
 
-alias disable_network_share="sudo pfctl -d -q 2>/dev/null && sudo sysctl -w net.inet.ip.forwarding=0"
+alias disable_network_share="sudo pfctl -d -q 2>/dev/null \
+	&& sudo sysctl -w net.inet.ip.forwarding=0"
 
 # FIXME: overwrite the prompt to add kubernetes information and other (maybe) useful stuff.
 # PS1=$'\n%{$fg[blue]%}%/%{$reset_color%} $(git_prompt_info)$(bzr_prompt_info)%{$fg[white]%}[%n@%m]%{$reset_color%} %{$fg[white]%}[%T]%{$reset_color%} $(kube_ps1)\n%{$fg_bold[black]%}%%%{$reset_color%} '
 
-type kube_ps1 2>&1 >/dev/null 
-if [[ $? -eq 0 ]] ; then 
-  # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/kube-ps1
-  KUBE_PS1_PREFIX=''
-  KUBE_PS1_SUFFIX=''
-  KUBE_PS1_SYMBOL_ENABLE=false
-  PS1=$'\n%{$fg[white]%}[%n@%m]%{$reset_color%} %{$fg[blue]%}%~%{$reset_color%} %{$fg[white]%}@%*%{$reset_color%} $(kube_ps1)\n$(git_prompt_info)$(bzr_prompt_info)[%?]%{$fg_bold[black]%}%#%{$reset_color%} '
-fi 
+# temporary hack to hide whites in the prompt
+# PS1=$'\n%{$fg[blue]%}%/%{$reset_color%} $(git_prompt_info)$(bzr_prompt_info)%{$fg[green]%}[%n@%m]%{$reset_color%} %{$fg[gray]%}[%T]%{$reset_color%}\n%{$fg_bold[black]%}\%%%{$reset_color%} '
 
-# ugly hack to use aws version 1
-# brew unlink awscli
-# brew link --force --overwrite awscli@1
 
-# ugly: force filetype on load
-alias vim_yaml="vim -c 'set filetype=yaml'"
-alias vim_json="vim -c 'set filetype=json'"
+# PS1=$'\n%{$fg[blue]%}[%n@%m]%{$reset_color%} %{$fg[blue]%}%~%{$reset_color%} %{$fg[blue]%}@%*%{$reset_color%} $(kube_ps1)\n$(git_prompt_info)$(bzr_prompt_info)[%?]%{$fg_bold[black]%}%#%{$reset_color%} '
+
+PS1=$'\n%{$fg[red]%}(%m):%{$reset_color%} %{$fg[blue]%}%~%{$reset_color%} %{$fg[black]%}@%*%{$reset_color%}\n$(git_prompt_info)$(bzr_prompt_info)[%?]%{$fg_bold[black]%}%#%{$reset_color%} '
 
 # fix open files limit issue in terraform
 # https://github.com/hashicorp/terraform/issues/23615
 ulimit -n 16384
-
-# just to make sure autocomplete works...
-autoload -U compinit
-compinit
 
 # EOF
